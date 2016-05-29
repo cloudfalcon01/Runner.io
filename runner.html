@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Runner.io</title>
+</head>
+
+<style>
+	body {
+		background-color: black;
+	}	
+</style>
+<body>
+
+<canvas id="Run" width= "1024" height="640"></canvas>
+
+	<script type="text/javascript">
+		var canvas = document.getElementById("Run");
+		var ctx = canvas.getContext("2d");
+		var canvasWidth = "1024";
+		var canvasHeight = "640";
+		function straightPath(x,y) {
+			this.centerX = x;
+			this.centerY = y;
+			this.edgeLength = 200;
+			this.width = 400;
+			this.height = 800;
+			this.drawPath = function() {
+				ctx.beginPath();
+				ctx.rect(this.centerX - this.width/2,this.centerY - this.height/2,this.width,this.height);
+				ctx.fillStyle = '#00FF00';
+				ctx.fill();
+				ctx.closePath(); 
+
+			}			
+		}
+
+			function jumpPath(x,y) {
+			this.centerX = x;
+			this.centerY = y;
+			this.edgeLength = 200;
+			this.width = 400;
+			this.height = 800;
+			this.drawPath = function() {
+				console.log(this.centerY);
+				ctx.beginPath();
+				ctx.rect(this.centerX - this.width/2,this.centerY - this.height/2,this.width,this.height);
+				ctx.fillStyle = '#00FF00';
+				ctx.fill();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.rect(this.centerX - this.width/2,(this.centerY - this.height/2)+this.height*1/3,this.width,this.height/3);
+				ctx.fillStyle = 'black';
+				ctx.fill();
+				ctx.closePath(); 
+			}			
+		}
+
+		var paths = [new straightPath(canvasWidth/2,0), new jumpPath(canvasWidth/2,-800)];
+		function scrollUpdate() { 
+			for (var i = 0; i < paths.length; i++) {
+				paths[i].centerY++;
+				if(paths[i].centerY > paths[i].height){
+					paths[i].centerY = -paths[i].height;
+				}
+			}            
+		}
+		
+		function drawPaths() {
+			for (var i = 0; i < paths.length; i++) {
+				paths[i].drawPath();
+			}   
+		}
+
+			/*function character() {
+				ctx.beginPath();
+				ctx.beginPath();
+				ctx.arc(this.centerX - this.width/2, this.centerY - this.height/2, 50, 0, Math.PI*2)
+				ctx.fillStyle = "orange";
+				ctx.fill();
+				ctx.closePath();
+			}*/
+
+			function draw() {
+				scrollUpdate();
+				drawPaths();
+				//character();
+			}
+			setInterval(draw,10);
+	</script>            
+
+</body>
+</html>
